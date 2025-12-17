@@ -6,11 +6,11 @@ class UtilisateurCreate(BaseModel):
     id: int 
     nom_utilisateur: str 
     email: str 
-    numéro_tl: int 
+    numero_tl: int 
     adresse: str 
     genre: str
     date_de_naissance: date
-    password: str 
+    mot_de_passe: str 
 
 class UtilisateurUpdate(BaseModel):
     name: str
