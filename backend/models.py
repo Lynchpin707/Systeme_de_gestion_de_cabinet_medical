@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Date, ForeignKey, Float, Text
+from sqlalchemy import Column, Integer, String, Date, ForeignKey, Float, Text, Time
 from sqlalchemy.ext.declarative import declarative_base
 from datetime import date
 from sqlalchemy.orm import relationship
@@ -67,14 +67,15 @@ class DemandeConge(Base):
     type_conge: str = Column(String(50), index=True)
     date_debut_conge: date = Column(Date)
     date_fin_conge: date = Column(Date)
+    
     employer = relationship("Employer", back_populates="demandes_conge")
 
 class RDV(Base):
     __tablename__ = "RDV"
     id_RDV = Column(Integer, primary_key=True, index=True)
     date_rdv = Column(Date)
+    heure_rdv = Column(Time) # Nouvelle colonne
     statut = Column(String(50))
-    # Relation vers Visite
     id_patient = Column(Integer, ForeignKey("patient.id_patient"))
     id_medecin = Column(Integer, ForeignKey("medecin.id_medecin"))
     
@@ -229,3 +230,26 @@ class PrescrireAnalyse(Base):
 
     ordonnance = relationship("Ordonnance", back_populates="analyses")
     analyse = relationship("Analyse")
+    
+class Symptome(Base):
+    __tablename__ = "symptome"
+    id_symptome = Column(Integer, primary_key=True, index=True)
+    nom_symptome = Column(String(100), nullable=False)
+    code_symptome = Column(String(20)) # Ex: FEVP (Fièvre), TOUX
+
+    # Relation vers les visites via la table de liaison
+    visites = relationship("Detecter", back_populates="symptome")
+
+class Detecter(Base):
+    __tablename__ = "detecter"
+    id_visite = Column(Integer, ForeignKey("Visite.id_visite"), primary_key=True)
+    id_symptome = Column(Integer, ForeignKey("symptome.id_symptome"), primary_key=True)
+    intensite = Column(String(50)) # Faible, Modérée, Forte
+
+    visite = relationship("Visite") # Assurez-vous que la classe Visite existe
+    symptome = relationship("Symptome", back_populates="visites")
+    
+class Signaler(Base):
+    __tablename__ = "signaler"
+    id_visite = Column(Integer, ForeignKey("Visite.id_visite", ondelete="CASCADE"), primary_key=True)
+    id_symptome = Column(Integer, ForeignKey("symptome.id_symptome", ondelete="CASCADE"), primary_key=True)

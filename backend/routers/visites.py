@@ -1,21 +1,36 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
-from .. import models, schema, database
+from .. import models, schema, database, auth
+from datetime import date
 
 router = APIRouter(prefix="/visites", tags=["Visites Médicales"])
 
-@router.post("/rdv", response_model=schema.RDV)
-def creer_rdv(rdv: schema.RDVCreate, db: Session = Depends(database.get_db)):
-    # Vérifier si le patient existe
-    patient = db.query(models.Patient).filter(models.Patient.id_patient == rdv.id_patient).first()
-    if not patient:
-        raise HTTPException(status_code=404, detail="Patient non trouvé")
+from datetime import time, timedelta
 
-    nouvel_rdv = models.RDV(**rdv.dict())
-    db.add(nouvel_rdv)
+@router.post("/rdv", response_model=schema.RDV)
+def prendre_rdv(obj: schema.RDVCreate, db: Session = Depends(database.get_db)):
+    # Heures d'ouverture (08:00 - 18:00)
+    ouverture = time(8, 0)
+    fermeture = time(18, 0)
+    if obj.heure_rdv < ouverture or obj.heure_rdv > fermeture:
+        raise HTTPException(status_code=400, detail="Le cabinet est fermé à cette heure.")
+
+    # Disponibilité du médecin 
+    conflit = db.query(models.RDV).filter(
+        models.RDV.id_medecin == obj.id_medecin,
+        models.RDV.date_rdv == obj.date_rdv,
+        models.RDV.heure_rdv == obj.heure_rdv
+    ).first()
+    
+    if conflit:
+        raise HTTPException(status_code=400, detail="Ce créneau est déjà pris.")
+
+   
+
+    nouveau_rdv = models.RDV(**obj.dict())
+    db.add(nouveau_rdv)
     db.commit()
-    db.refresh(nouvel_rdv)
-    return nouvel_rdv
+    return nouveau_rdv
 
 @router.get("/rdv/aujourdhui", response_model=list[schema.RDV])
 def rdv_du_jour(db: Session = Depends(database.get_db)):

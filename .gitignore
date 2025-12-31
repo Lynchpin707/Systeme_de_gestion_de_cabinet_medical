@@ -5,3 +5,6 @@ app/__pycache__/
 __pycache__
 .zen/
 frontend/
+seed_db.py
+vider_db.py
+node_modules/

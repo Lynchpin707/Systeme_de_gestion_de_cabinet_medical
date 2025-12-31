@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from .. import models, schema, database
+from ..auth import get_utilisateur_actuel
 
 router = APIRouter(prefix="/dossier_medical", tags=["Dossier Médical"])
 
@@ -29,4 +30,28 @@ def obtenir_dossier(id_patient: int, db: Session = Depends(database.get_db)):
     dossier = db.query(models.DossierMedical).filter(models.DossierMedical.id_patient == id_patient).first()
     if not dossier:
         raise HTTPException(status_code=404, detail="Dossier non trouvé")
+    return dossier
+
+router = APIRouter(prefix="/dossiers", tags=["Dossier Médical"])
+
+@router.get("/{id_patient}")
+def obtenir_dossier(
+    id_patient: int, 
+    db: Session = Depends(database.get_db),
+    current_user: models.Utilisateur = Depends(get_utilisateur_actuel) # Route protégée
+):
+    # 1. Récupérer le dossier
+    dossier = db.query(models.DossierMedical).filter(models.DossierMedical.id_patient == id_patient).first()
+    
+    # 2. Vérifier si l'utilisateur est un médecin
+    medecin = db.query(models.Medecin).filter(models.Medecin.id_employer == current_user.employer.id_employer).first()
+    
+    if not medecin:
+        raise HTTPException(status_code=403, detail="Accès réservé au personnel médical")
+
+    # 3. RÈGLE DE GESTION : Est-ce le médecin traitant ?
+    patient = db.query(models.Patient).filter(models.Patient.id_patient == id_patient).first()
+    if patient.medecin_traitant != medecin.id_medecin:
+        raise HTTPException(status_code=403, detail="Vous n'êtes pas le médecin traitant de ce patient")
+
     return dossier

@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from typing import List
 from .. import models, schema, database
+from ..auth import verifier_role
 
 router = APIRouter(prefix="/ordonnances", tags=["Prescriptions"])
 
@@ -28,7 +29,7 @@ def obtenir_ordonnance_visite(id_visite: int, db: Session = Depends(database.get
 # --- Gestion du Référentiel Médicaments ---
 
 @router.post("/referentiel-medicaments", response_model=schema.Medicament)
-def creer_medicament_dans_dictionnaire(med: schema.MedicamentCreate, db: Session = Depends(database.get_db)):
+def creer_medicament_dans_dictionnaire(med: schema.MedicamentCreate, db: Session = Depends(database.get_db), _ = Depends(verifier_role(["Admin", "Médecin"]))):
     nouveau_med = models.Medicament(**med.dict())
     db.add(nouveau_med)
     db.commit()

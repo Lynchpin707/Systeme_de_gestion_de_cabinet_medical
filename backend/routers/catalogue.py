@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from typing import List
 from .. import models, schema, database
+from ..auth import verifier_role
 
 router = APIRouter(
     prefix="/catalogue",
@@ -9,13 +10,16 @@ router = APIRouter(
 )
 
 # --- Endpoints Actes ---
-@router.post("/actes", response_model=schema.ActeMedical)
-def creer_acte(acte: schema.ActeMedicalCreate, db: Session = Depends(database.get_db)):
-    db_acte = models.ActeMedical(**acte.dict())
-    db.add(db_acte)
+@router.post("/", response_model=schema.ActeMedical)
+def creer_acte(
+    obj: schema.ActeMedicalCreate, 
+    db: Session = Depends(database.get_db),
+    _ = Depends(verifier_role(["Admin"])) # Seul l'Admin passe ici
+):
+    nouvel_acte = models.ActeMedical(**obj.dict())
+    db.add(nouvel_acte)
     db.commit()
-    db.refresh(db_acte)
-    return db_acte
+    return nouvel_acte
 
 @router.get("/actes", response_model=List[schema.ActeMedical])
 def lister_actes(db: Session = Depends(database.get_db)):
