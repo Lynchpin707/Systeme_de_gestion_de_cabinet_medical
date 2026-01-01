@@ -6,7 +6,7 @@ from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
 from . import  models
-from database import database
+from backend import database
 
 # Configuration
 SECRET_KEY = "VOTRE_CLE_TRES_SECRETE" # À changer en production

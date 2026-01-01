@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from database.database import engine
+from backend.database import engine
 from backend import models
 from backend.routers import utilisateurs, visites, facturation, catalogue, dossier_medical, ordonnances, clinique, rh, stats
 from backend.routers import auth
@@ -15,7 +15,7 @@ app = FastAPI(title="Cabinet Médical API")
 # Configuration CORS 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"], 
+    allow_origins=["http://localhost:3001"], 
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

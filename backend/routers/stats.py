@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 from sqlalchemy.orm import Session
 from sqlalchemy import func
 from .. import models
-from database import database
+from backend import database
 
 router = APIRouter(
     prefix="/stats", # Changez ici pour correspondre à votre code React
