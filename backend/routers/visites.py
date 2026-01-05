@@ -52,3 +52,19 @@ def creer_visite(visite: schema.VisiteCreate, db: Session = Depends(database.get
     db.refresh(nouvelle_visite)
     return nouvelle_visite
 
+# --- Récupérer les RDV du patient connecté ---
+@router.get("/mes-rdv", response_model=list[schema.RDV])
+def obtenir_mes_rdv(id_patient: int, db: Session = Depends(database.get_db)):
+    # On récupère tous les RDV, classés par date (du plus récent au plus ancien)
+    return db.query(models.RDV).filter(
+        models.RDV.id_patient == id_patient
+    ).order_by(models.RDV.date_rdv.desc()).all()
+
+# --- Récupérer l'historique des visites du patient ---
+@router.get("/mes-visites", response_model=list[schema.Visite])
+def obtenir_mes_visites(id_patient: int, db: Session = Depends(database.get_db)):
+    # On cherche les visites liées aux RDV de ce patient
+    return db.query(models.Visite).join(models.RDV).filter(
+        models.RDV.id_patient == id_patient
+    ).order_by(models.Visite.id_visite.desc()).all()
+    
