@@ -8,3 +8,4 @@ pymysql
 jose
 python-multipart
 python-jose[cryptography]
+bcrypt==4.0.1
