@@ -1,0 +1,10 @@
+fastapi
+sqlalchemy
+npm
+react
+uvicorn
+dotenv
+pymysql
+jose
+python-multipart
+python-jose[cryptography]
