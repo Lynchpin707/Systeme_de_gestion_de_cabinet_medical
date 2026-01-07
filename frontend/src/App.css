@@ -1,0 +1,23 @@
+.App {
+  background: #F0F9FA;
+  /* min-height: 100vh; */
+  position: relative;
+  overflow-x: hidden;
+}
+.App {
+  background: #F0F9FA;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+  transition: margin-right 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.App.content-pushed {
+  margin-right: 450px;
+}
+
+@media (max-width: 768px) {
+  .App.content-pushed {
+    margin-right: 0;
+  }
+}

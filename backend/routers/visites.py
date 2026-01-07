@@ -68,3 +68,48 @@ def obtenir_mes_visites(id_patient: int, db: Session = Depends(database.get_db))
         models.RDV.id_patient == id_patient
     ).order_by(models.Visite.id_visite.desc()).all()
     
+@router.put("/rdv/{rdv_id}/modifier", response_model=schema.RDV)
+def modifier_rdv(rdv_id: int, obj: schema.RDVCreate, db: Session = Depends(database.get_db)):
+    # 1. Annuler l'ancien RDV
+    ancien_rdv = db.query(models.RDV).filter(models.RDV.id_RDV == rdv_id).first()
+    if not ancien_rdv:
+        raise HTTPException(status_code=404, detail="Rendez-vous introuvable")
+    
+    ancien_rdv.statut = "Annulé"
+
+    # 2. Vérifier la disponibilité pour le nouveau créneau (Logique identique à prendre_rdv)
+    ouverture, fermeture = time(8, 0), time(18, 0)
+    if obj.heure_rdv < ouverture or obj.heure_rdv > fermeture:
+        raise HTTPException(status_code=400, detail="Le cabinet est fermé à cette heure.")
+
+    conflit = db.query(models.RDV).filter(
+        models.RDV.id_medecin == obj.id_medecin,
+        models.RDV.date_rdv == obj.date_rdv,
+        models.RDV.heure_rdv == obj.heure_rdv,
+        models.RDV.statut != "Annulé"
+    ).first()
+    
+    if conflit:
+        raise HTTPException(status_code=400, detail="Ce nouveau créneau est déjà pris.")
+    
+    data = obj.dict()
+    # On s'assure que le statut est "Confirmé" (ou "Prévu") peu importe ce qui vient du front
+    data["statut"] = "Confirmé"
+
+    # 3. Créer le nouveau RDV
+    nouveau_rdv = models.RDV(**data)
+    db.add(nouveau_rdv)
+    db.commit()
+    db.refresh(nouveau_rdv)
+    return nouveau_rdv
+
+@router.patch("/rdv/{rdv_id}/annuler", response_model=schema.RDV)
+def annuler_rdv(rdv_id: int, db: Session = Depends(database.get_db)):
+    rdv = db.query(models.RDV).filter(models.RDV.id_RDV == rdv_id).first()
+    if not rdv:
+        raise HTTPException(status_code=404, detail="Rendez-vous introuvable")
+    
+    rdv.statut = "Annulé"
+    db.commit()
+    db.refresh(rdv)
+    return rdv

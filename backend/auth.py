@@ -51,12 +51,42 @@ def get_utilisateur_actuel(token: str = Depends(oauth2_scheme), db: Session = De
     return user
 
 def verifier_role(roles_autorises: list):
+
     def role_checker(current_user: models.Utilisateur = Depends(get_utilisateur_actuel)):
+
         # On récupère le rôle via la relation avec Employer
+
         if not current_user.employer or current_user.employer.role not in roles_autorises:
+
             raise HTTPException(
-                status_code=status.HTTP_403_FORBIDDEN,
-                detail="Vous n'avez pas les permissions nécessaires (Rôle requis: " + str(roles_autorises) + ")"
-            )
+
+        status_code=status.HTTP_403_FORBIDDEN,
+
+        detail="Vous n'avez pas les permissions nécessaires (Rôle requis: " + str(roles_autorises) + ")"
+
+        )
+
+        return current_user
+
+    return role_checker
+
+
+def verifier_role_admin():
+    def role_checker(current_user: models.Utilisateur = Depends(get_utilisateur_actuel), db: Session = Depends(database.get_db)):
+        print(f"--- DEBUG AUTH ---")
+        print(f"ID Utilisateur connecté: {current_user.id_utilisateur}")
+        
+        # On vérifie l'existence dans la table admin
+        admin_record = db.query(models.Admin).filter(models.Admin.id_utilisateur == current_user.id_utilisateur).first()
+        
+        if not admin_record:
+            print(f"ERREUR: L'ID {current_user.id_utilisateur} n'existe pas dans la table ADMIN")
+            # Liste des IDs admin pour comparer
+            all_admins = db.query(models.Admin.id_utilisateur).all()
+            print(f"IDs presents dans la table Admin: {all_admins}")
+            
+            raise HTTPException(status_code=403, detail="Accès réservé : ID non trouvé dans la table Admin")
+        
+        print("DEBUG: Accès autorisé !")
         return current_user
     return role_checker

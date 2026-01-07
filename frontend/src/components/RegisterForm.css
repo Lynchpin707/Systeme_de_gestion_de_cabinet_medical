@@ -1,0 +1,238 @@
+.register-form-container {
+  width: 100%;
+  max-height: 75vh;
+  overflow-y: auto;
+  padding-right: 5px;
+}
+
+/* Scrollbar personnalisée */
+.register-form-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.register-form-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.register-form-container::-webkit-scrollbar-thumb {
+  background: #3EAEB1;
+  border-radius: 10px;
+}
+
+.register-form-container::-webkit-scrollbar-thumb:hover {
+  background: #2d8a8d;
+}
+
+/* Header */
+.register-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid rgba(62, 174, 177, 0.1);
+}
+
+.back-btn {
+  width: 40px;
+  height: 40px;
+  background: rgba(62, 174, 177, 0.1);
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.back-btn:hover {
+  background: #3EAEB1;
+}
+
+.back-btn:hover svg {
+  stroke: white;
+}
+
+.back-btn svg {
+  width: 20px;
+  height: 20px;
+  stroke: #3EAEB1;
+  transition: stroke 0.3s ease;
+}
+
+.register-header h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 24px;
+  color: #1F2937;
+  margin: 0 0 5px 0;
+  font-weight: 700;
+}
+
+.register-header p {
+  font-size: 14px;
+  color: #6B7280;
+  margin: 0;
+}
+
+/* Form */
+.register-form {
+  width: 100%;
+}
+
+.form-section {
+  margin-bottom: 25px;
+}
+
+.form-section h3 {
+  font-size: 16px;
+  color: #1F2937;
+  font-weight: 700;
+  margin: 0 0 15px 0;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #E5E7EB;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-field label {
+  display: block;
+  margin-bottom: 8px;
+  color: #374151;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.form-field input,
+.form-field select {
+  width: 100%;
+  padding: 12px 14px;
+  border: 2px solid #E5E7EB;
+  border-radius: 10px;
+  font-size: 14px;
+  font-family: 'Source Sans 3', sans-serif;
+  transition: all 0.3s ease;
+  background: white;
+}
+
+.form-field input:focus,
+.form-field select:focus {
+  outline: none;
+  border-color: #3EAEB1;
+  box-shadow: 0 0 0 3px rgba(62, 174, 177, 0.1);
+}
+
+.form-field input.error,
+.form-field select.error {
+  border-color: #EF4444;
+}
+
+.form-field input::placeholder {
+  color: #9CA3AF;
+}
+
+.error-message {
+  display: block;
+  color: #EF4444;
+  font-size: 12px;
+  margin-top: 5px;
+  font-weight: 500;
+}
+
+/* Submit Button */
+.submit-register-btn {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, #3EAEB1 0%, #61BACA 50%, #9CD1CE 100%);
+  background-size: 200% 200%;
+  animation: gradientMove 3s ease infinite;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(62, 174, 177, 0.4);
+  margin-top: 20px;
+}
+
+.submit-register-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 30px rgba(62, 174, 177, 0.5);
+}
+
+.submit-register-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.submit-register-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+@keyframes gradientMove {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .register-header h2 {
+    font-size: 20px;
+  }
+
+  .form-section h3 {
+    font-size: 15px;
+  }
+}
+
+/* Loading State */
+.submit-register-btn .spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+  margin-left: 8px;
+}
+
+@keyframes spin {
+  to { 
+    transform: rotate(360deg); 
+  }
+}
+
+/* Focus visible pour accessibilité */
+.back-btn:focus-visible,
+.form-field input:focus-visible,
+.form-field select:focus-visible,
+.submit-register-btn:focus-visible {
+  outline: 2px solid #3EAEB1;
+  outline-offset: 2px;
+}

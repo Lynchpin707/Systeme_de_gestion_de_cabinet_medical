@@ -1,0 +1,864 @@
+.patient-dashboard {
+  display: flex;
+  min-height: 100vh;
+  background: #F0F9FA;
+}
+
+/* Sidebar */
+.patient-sidebar {
+  width: 280px;
+  background: white;
+  border-right: 1px solid rgba(62, 174, 177, 0.1);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  height: 100vh;
+  left: 0;
+  top: 0;
+  z-index: 100;
+}
+
+.patient-logo {
+  padding: 30px 25px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid rgba(62, 174, 177, 0.1);
+}
+
+.patient-logo .logo-icon {
+  width: 45px;
+  height: 45px;
+  background: linear-gradient(135deg, #3EAEB1, #1D837F);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.patient-logo .logo-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.patient-logo span {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: #3EAEB1;
+}
+
+.patient-nav {
+  flex: 1;
+  padding: 25px 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.nav-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  background: transparent;
+  border: none;
+  border-radius: 10px;
+  color: #6B7280;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: left;
+}
+
+.nav-btn svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.nav-btn:hover {
+  background: rgba(62, 174, 177, 0.1);
+  color: #3EAEB1;
+}
+
+.nav-btn.active {
+  background: linear-gradient(135deg, #3EAEB1, #61BACA);
+  color: white;
+  box-shadow: 0 4px 15px rgba(62, 174, 177, 0.3);
+}
+
+.logout-btn {
+  margin: 15px;
+  padding: 14px;
+  background: rgba(239, 68, 68, 0.1);
+  border: none;
+  border-radius: 10px;
+  color: #EF4444;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.logout-btn:hover {
+  background: #EF4444;
+  color: white;
+}
+
+.logout-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Main Content */
+.patient-main {
+  flex: 1;
+  margin-left: 280px;
+  display: flex;
+  flex-direction: column;
+}
+
+.patient-header {
+  background: white;
+  padding: 25px 40px;
+  border-bottom: 1px solid rgba(62, 174, 177, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.patient-header h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  color: #1F2937;
+  margin: 0 0 5px 0;
+}
+
+.patient-header p {
+  color: #6B7280;
+  margin: 0;
+  font-size: 14px;
+}
+
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.profile-avatar {
+  width: 45px;
+  height: 45px;
+  background: linear-gradient(135deg, #3EAEB1, #61BACA);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 700;
+  font-size: 18px;
+}
+
+.user-profile span {
+  font-size: 15px;
+  color: #1F2937;
+  font-weight: 600;
+}
+
+/* Content */
+.patient-content {
+  flex: 1;
+  padding: 40px;
+}
+
+.page-section h2 {
+  font-size: 24px;
+  color: #1F2937;
+  margin: 0 0 25px 0;
+  font-weight: 700;
+}
+
+/* RDV Actuel Card */
+.rdv-actuel-card {
+  background: white;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 2px solid rgba(62, 174, 177, 0.2);
+}
+
+.rdv-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid rgba(62, 174, 177, 0.1);
+}
+
+.rdv-header h3 {
+  font-size: 20px;
+  color: #1F2937;
+  margin: 0;
+}
+
+.rdv-status {
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.rdv-status.confirme {
+  background: rgba(16, 185, 129, 0.1);
+  color: #10B981;
+}
+
+.rdv-details-box {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-bottom: 25px;
+}
+
+.rdv-info-item {
+  display: flex;
+  gap: 15px;
+  align-items: flex-start;
+  padding: 20px;
+  background: #F9FAFB;
+  border-radius: 12px;
+}
+
+.rdv-info-item svg {
+  width: 24px;
+  height: 24px;
+  stroke: #3EAEB1;
+  flex-shrink: 0;
+  margin-top: 5px;
+}
+
+.rdv-info-item .label {
+  display: block;
+  font-size: 12px;
+  color: #6B7280;
+  margin-bottom: 5px;
+  font-weight: 500;
+}
+
+.rdv-info-item strong {
+  display: block;
+  font-size: 16px;
+  color: #1F2937;
+}
+
+.rdv-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.btn-action {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px;
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-action svg {
+  width: 18px;
+  height: 18px;
+}
+
+.btn-action.modifier {
+  background: rgba(62, 174, 177, 0.1);
+  color: #3EAEB1;
+  border: 2px solid rgba(62, 174, 177, 0.2);
+}
+
+.btn-action.modifier:hover {
+  background: #3EAEB1;
+  color: white;
+  transform: translateY(-2px);
+}
+
+.btn-action.annuler {
+  background: rgba(239, 68, 68, 0.1);
+  color: #EF4444;
+  border: 2px solid rgba(239, 68, 68, 0.2);
+}
+
+.btn-action.annuler:hover {
+  background: #EF4444;
+  color: white;
+  transform: translateY(-2px);
+}
+
+/* No RDV Card */
+.no-rdv-card {
+  text-align: center;
+  padding: 60px 40px;
+  background: white;
+  border-radius: 16px;
+  border: 2px dashed rgba(62, 174, 177, 0.3);
+}
+
+.no-rdv-card svg {
+  width: 80px;
+  height: 80px;
+  stroke: #D1D5DB;
+  margin-bottom: 20px;
+}
+
+.no-rdv-card p {
+  font-size: 16px;
+  color: #6B7280;
+  margin: 0 0 25px 0;
+}
+
+.btn-prendre-rdv {
+  padding: 14px 30px;
+  background: linear-gradient(135deg, #3EAEB1, #61BACA);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-prendre-rdv:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(62, 174, 177, 0.5);
+}
+
+/* Alerts */
+.alert-warning,
+.alert-info {
+  display: flex;
+  gap: 15px;
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 25px;
+}
+
+.alert-warning {
+  background: rgba(251, 146, 60, 0.1);
+  border: 2px solid rgba(251, 146, 60, 0.3);
+}
+
+.alert-warning svg {
+  width: 24px;
+  height: 24px;
+  stroke: #F97316;
+  flex-shrink: 0;
+}
+
+.alert-warning strong,
+.alert-info strong {
+  display: block;
+  font-size: 15px;
+  margin-bottom: 5px;
+}
+
+.alert-warning p,
+.alert-info p {
+  font-size: 14px;
+  margin: 0;
+  color: #6B7280;
+}
+
+.alert-info {
+  background: rgba(62, 174, 177, 0.1);
+  border: 2px solid rgba(62, 174, 177, 0.3);
+}
+
+.alert-info svg {
+  stroke: #3EAEB1;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+/* Form RDV */
+.rdv-form-container {
+  background: white;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.rdv-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-field label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 8px;
+}
+
+.form-field input,
+.form-field select,
+.form-field textarea {
+  padding: 12px;
+  border: 2px solid #E5E7EB;
+  border-radius: 10px;
+  font-size: 14px;
+  font-family: 'Source Sans 3', sans-serif;
+  transition: all 0.3s ease;
+}
+
+.form-field input:focus,
+.form-field select:focus,
+.form-field textarea:focus {
+  outline: none;
+  border-color: #3EAEB1;
+  box-shadow: 0 0 0 3px rgba(62, 174, 177, 0.1);
+}
+
+.form-field textarea {
+  resize: vertical;
+}
+
+.btn-submit-rdv {
+  padding: 16px;
+  background: linear-gradient(135deg, #3EAEB1, #61BACA);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 10px;
+}
+
+.btn-submit-rdv:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(62, 174, 177, 0.5);
+}
+
+/* Visites Timeline */
+.visites-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.visite-card {
+  display: flex;
+  gap: 20px;
+  background: white;
+  padding: 25px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.visite-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+}
+
+.visite-date-badge {
+  min-width: 100px;
+  padding: 15px;
+  background: linear-gradient(135deg, #3EAEB1, #61BACA);
+  color: white;
+  border-radius: 12px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 14px;
+  height: fit-content;
+}
+
+.visite-content {
+  flex: 1;
+}
+
+.visite-header-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #E5E7EB;
+}
+
+.visite-header-info h3 {
+  font-size: 18px;
+  color: #1F2937;
+  margin: 0;
+}
+
+.visite-type {
+  padding: 6px 12px;
+  background: rgba(62, 174, 177, 0.1);
+  color: #3EAEB1;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.visite-diagnostic {
+  font-size: 15px;
+  color: #4B5563;
+  margin: 0 0 20px 0;
+  line-height: 1.6;
+}
+
+.visite-section {
+  margin-bottom: 15px;
+}
+
+.visite-section strong {
+  display: block;
+  font-size: 13px;
+  color: #6B7280;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.actes-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.acte-tag {
+  padding: 6px 12px;
+  background: rgba(62, 174, 177, 0.1);
+  color: #3EAEB1;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.prescriptions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.prescription-item {
+  display: flex;
+  gap: 12px;
+  padding: 15px;
+  background: #F9FAFB;
+  border-radius: 10px;
+  border-left: 3px solid #3EAEB1;
+}
+
+.presc-icon {
+  font-size: 28px;
+  flex-shrink: 0;
+}
+
+.presc-details {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.presc-details strong {
+  font-size: 14px;
+  color: #1F2937;
+}
+
+.presc-details span {
+  font-size: 13px;
+  color: #6B7280;
+}
+
+/* Factures Patient */
+.factures-patient-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: 20px;
+}
+
+.facture-patient-card {
+  background: white;
+  padding: 25px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  border: 1px solid #E5E7EB;
+  transition: all 0.3s ease;
+}
+
+.facture-patient-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+  border-color: #3EAEB1;
+}
+
+.facture-header-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #E5E7EB;
+}
+
+.facture-header-section h3 {
+  font-size: 18px;
+  color: #1F2937;
+  margin: 0 0 5px 0;
+}
+
+.facture-date {
+  font-size: 13px;
+  color: #6B7280;
+}
+
+.facture-status {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.facture-status.payee {
+  background: rgba(16, 185, 129, 0.1);
+  color: #10B981;
+}
+
+.facture-status.partielle {
+  background: rgba(251, 146, 60, 0.1);
+  color: #F97316;
+}
+
+.facture-montants {
+  background: #F9FAFB;
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.montant-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.montant-row:last-child {
+  margin-bottom: 0;
+}
+
+.montant-row span {
+  font-size: 14px;
+  color: #6B7280;
+}
+
+.montant-total {
+  font-size: 18px;
+  font-weight: 700;
+  color: #3EAEB1;
+}
+
+.montant-paye {
+  font-size: 16px;
+  font-weight: 600;
+  color: #10B981;
+}
+
+.montant-row.reste {
+  padding-top: 10px;
+  border-top: 2px solid #E5E7EB;
+  margin-top: 10px;
+}
+
+.montant-reste {
+  font-size: 18px;
+  font-weight: 700;
+  color: #EF4444;
+}
+
+.paiements-historique {
+  margin-bottom: 20px;
+}
+
+.paiements-historique strong {
+  display: block;
+  font-size: 13px;
+  color: #6B7280;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.paiement-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background: #F9FAFB;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  font-size: 13px;
+}
+
+.paiement-date {
+  color: #6B7280;
+}
+
+.paiement-montant {
+  font-weight: 600;
+  color: #10B981;
+}
+
+.paiement-mode {
+  padding: 4px 10px;
+  background: rgba(62, 174, 177, 0.1);
+  color: #3EAEB1;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.btn-payer {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, #3EAEB1, #61BACA);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-payer:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(62, 174, 177, 0.5);
+}
+
+/* Médecin Traitant */
+.medecin-traitant-card {
+  display: flex;
+  gap: 30px;
+  align-items: center;
+  background: white;
+  padding: 40px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.medecin-avatar-large {
+  width: 120px;
+  height: 120px;
+  background: linear-gradient(135deg, #3EAEB1, #61BACA);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 700;
+  font-size: 48px;
+  flex-shrink: 0;
+}
+
+.medecin-info-section h3 {
+  font-size: 28px;
+  color: #1F2937;
+  margin: 0 0 5px 0;
+}
+
+.medecin-specialite {
+  font-size: 16px;
+  color: #3EAEB1;
+  font-weight: 600;
+  margin: 0 0 25px 0;
+}
+
+.medecin-contact {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background: #F9FAFB;
+  border-radius: 10px;
+}
+
+.contact-item svg {
+  width: 20px;
+  height: 20px;
+  stroke: #3EAEB1;
+  flex-shrink: 0;
+}
+
+.contact-item span {
+  font-size: 15px;
+  color: #4B5563;
+  font-weight: 500;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .rdv-details-box {
+    grid-template-columns: 1fr;
+  }
+
+  .factures-patient-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .patient-sidebar {
+    transform: translateX(-100%);
+  }
+
+  .patient-main {
+    margin-left: 0;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .rdv-actions {
+    flex-direction: column;
+  }
+
+  .medecin-traitant-card {
+    flex-direction: column;
+    text-align: center;
+  }
+}

@@ -62,11 +62,13 @@ class Patient(Base):
 
 class DemandeConge(Base):
     __tablename__ = "demande_conge"
-    id_demande: int = Column(Integer, primary_key=True, index=True)
-    id_employer: int = Column(Integer, ForeignKey("employer.id_employer"), index=True)
-    type_conge: str = Column(String(50), index=True)
-    date_debut_conge: date = Column(Date)
-    date_fin_conge: date = Column(Date)
+    id_demande = Column(Integer, primary_key=True, index=True)
+    id_employer = Column(Integer, ForeignKey("employer.id_employer"), index=True)
+    type_conge = Column(String(50), index=True)
+    date_debut_conge = Column(Date)
+    date_fin_conge = Column(Date)
+    # AJOUTEZ CETTE LIGNE :
+    statut = Column(String(50), default="en_attente") 
     
     employer = relationship("Employer", back_populates="demandes_conge")
 

@@ -1,0 +1,132 @@
+.actes-manager {
+  background: white;
+  padding: 25px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.actes-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.actes-header h3 {
+  font-size: 20px;
+  color: #1F2937;
+  margin: 0;
+}
+
+.btn-add-acte {
+  padding: 10px 18px;
+  background: linear-gradient(135deg, #3EAEB1, #61BACA);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-add-acte:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(62, 174, 177, 0.4);
+}
+
+.acte-form {
+  display: grid;
+  grid-template-columns: 2fr 1fr auto;
+  gap: 12px;
+  padding: 20px;
+  background: rgba(62, 174, 177, 0.05);
+  border-radius: 12px;
+  margin-bottom: 20px;
+}
+
+.acte-form input {
+  padding: 12px;
+  border: 2px solid #E5E7EB;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.acte-form input:focus {
+  outline: none;
+  border-color: #3EAEB1;
+}
+
+.btn-save {
+  padding: 12px 24px;
+  background: #3EAEB1;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.actes-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.acte-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  background: #F9FAFB;
+  border-radius: 10px;
+  border: 1px solid #E5E7EB;
+  transition: all 0.3s ease;
+}
+
+.acte-card:hover {
+  border-color: #3EAEB1;
+  background: rgba(62, 174, 177, 0.05);
+}
+
+.acte-info h4 {
+  font-size: 16px;
+  color: #1F2937;
+  margin: 0 0 5px 0;
+}
+
+.acte-tarif {
+  font-size: 18px;
+  font-weight: 700;
+  color: #3EAEB1;
+}
+
+.acte-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.acte-actions button {
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.acte-actions button:first-child {
+  background: rgba(62, 174, 177, 0.1);
+}
+
+.acte-actions button:first-child:hover {
+  background: #3EAEB1;
+}
+
+.acte-actions button:last-child {
+  background: rgba(239, 68, 68, 0.1);
+}
+
+.acte-actions button:last-child:hover {
+  background: #EF4444;
+}

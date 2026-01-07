@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from datetime import date, time
-from typing import Optional
+from typing import Optional, List
 
 
 class UtilisateurCreate(BaseModel):
@@ -22,9 +22,10 @@ class PatientCreate(UtilisateurCreate):
     
 class EmployerCreate(UtilisateurCreate):
      
-    role: str
+     
+    role: str = "Medecin"
     salaire : int
-    statut: Optional[str]
+    statut: Optional[str] = "Actif"
     
 class MedecinCreate(EmployerCreate):
     specialite: Optional[str]
@@ -33,8 +34,7 @@ class Utilisateur(UtilisateurCreate):
     id_utilisateur: int
 
     class Config:
-        orm_mode = True # Pour Python 3.9 / Pydantic v1
-        # ou from_attributes = True si vous utilisez Pydantic v2
+        from_attributes = True 
 
 class PatientOut(BaseModel):
     id_patient: int
@@ -43,7 +43,7 @@ class PatientOut(BaseModel):
     couverture_medicale: Optional[str]
 
     class Config:
-        orm_mode = True
+        from_attributes = True 
 
 class EmployerOut(BaseModel):
     id_employer: int
@@ -53,7 +53,7 @@ class EmployerOut(BaseModel):
     statut: Optional[str]
 
     class Config:
-        orm_mode = True
+        from_attributes = True 
 
 class MedecinOut(BaseModel):
     id_medecin: int
@@ -61,7 +61,7 @@ class MedecinOut(BaseModel):
     specialite: Optional[str]
 
     class Config:
-        orm_mode = True     
+        from_attributes = True      
         
 class VisiteBase(BaseModel):
     type_visite: str
@@ -129,7 +129,7 @@ class ActeMedical(BaseModel):
     class Config:
         from_attributes = True
         
-# --- Acte Médical ---
+# --- SCHÉMAS ACTE MÉDICAL ---
 class ActeMedicalBase(BaseModel):
     nom_acte: str
     code_acte: str
@@ -142,7 +142,22 @@ class ActeMedical(ActeMedicalBase):
     class Config:
         from_attributes = True
 
-# --- Catalogue ---
+# --- SCHÉMAS TARIFICATION ---
+class TarifierBase(BaseModel):
+    id_catalogue: int
+    id_acte: int
+    prix: float
+
+class TarifierCreate(TarifierBase):
+    pass
+
+class Tarifier(TarifierBase):
+    id_tarifier: int
+    acte: Optional[ActeMedical] = None # Permet d'inclure les détails de l'acte
+    class Config:
+        from_attributes = True
+
+# --- SCHÉMAS CATALOGUE ---
 class CatalogueBase(BaseModel):
     nom_catalogue: str
     description: Optional[str] = None
@@ -152,21 +167,9 @@ class CatalogueCreate(CatalogueBase):
 
 class Catalogue(CatalogueBase):
     id_catalogue: int
+    tarifs: List[Tarifier] = [] # Permet de lister les actes et prix liés
     class Config:
         from_attributes = True
-
-# --- Tarification ---
-class TarifierCreate(BaseModel):
-    id_catalogue: int
-    id_acte: int
-    prix: float
-
-class Tarifier(TarifierCreate):
-    id_tarifier: int
-    acte: Optional[ActeMedical]
-    class Config:
-        from_attributes = True
-    
 # --- Dossier Médical ---
 class DossierMedicalBase(BaseModel):
     id_patient: int
@@ -234,10 +237,11 @@ class Employer(EmployerBase):
         from_attributes = True
 
 # --- Medecin ---
-class MedecinCreate(BaseModel):
-    id_employer: int
+class MedecinCreate(UtilisateurCreate): # Hérite de nom, prenom, email, mdp, tel
+    role: str = "Medecin"
+    salaire: float
+    statut: str = "Actif"
     specialite: str
-    grade: str
 
 class Medecin(MedecinCreate):
     id_medecin: int
@@ -274,3 +278,10 @@ class Symptome(SymptomeBase):
 class DetectionCreate(BaseModel):
     id_symptome: int
     intensite: Optional[str] = "Modérée"
+    
+class CongeCreate(BaseModel):
+    id_employer: int
+    type_conge: str
+    date_debut_conge: date
+    date_fin_conge: date
+    

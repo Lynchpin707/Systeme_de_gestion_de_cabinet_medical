@@ -1,0 +1,164 @@
+.catalogue-container {
+  background: white;
+  padding: 25px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+.catalogue-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.catalogue-header h2 {
+  font-size: 20px;
+  color: #1F2937;
+  margin: 0;
+}
+
+.btn-add {
+  padding: 12px 20px;
+  background: linear-gradient(135deg, #3EAEB1, #61BACA);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-add:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(62, 174, 177, 0.4);
+}
+
+/* Style du formulaire similaire à conge-form */
+.acte-form-box {
+  padding: 25px;
+  background: rgba(62, 174, 177, 0.05);
+  border-radius: 12px;
+  margin-bottom: 25px;
+  border: 2px solid rgba(62, 174, 177, 0.1);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.acte-form-box input,
+.acte-form-box select {
+  padding: 12px;
+  border: 2px solid #E5E7EB;
+  border-radius: 10px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.acte-form-box input:focus,
+.acte-form-box select:focus {
+  outline: none;
+  border-color: #3EAEB1;
+  box-shadow: 0 0 0 3px rgba(62, 174, 177, 0.1);
+}
+
+.btn-submit {
+  grid-column: span 2;
+  padding: 14px;
+  background: linear-gradient(135deg, #3EAEB1, #61BACA);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+/* Sections de Catalogues */
+.catalogues-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.catalogue-section {
+  background: #F9FAFB;
+  border-radius: 12px;
+  border: 1px solid #E5E7EB;
+  overflow: hidden;
+}
+
+.cat-title {
+  background: white;
+  padding: 15px 20px;
+  margin: 0;
+  font-size: 16px;
+  color: #374151;
+  border-bottom: 1px solid #E5E7EB;
+}
+
+/* Tableaux d'actes médicaux */
+.acte-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.acte-table th {
+  padding: 12px 20px;
+  font-size: 12px;
+  text-transform: uppercase;
+  color: #6B7280;
+  background: #F3F4F6;
+}
+
+.acte-table td {
+  padding: 15px 20px;
+  font-size: 14px;
+  color: #4B5563;
+  border-bottom: 1px solid #F3F4F6;
+}
+
+.acte-table tr:last-child td {
+  border-bottom: none;
+}
+
+.acte-table code {
+  background: #E5E7EB;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-family: monospace;
+  color: #1F2937;
+}
+
+.price-cell {
+  font-weight: 700;
+  color: #3EAEB1 !important;
+}
+
+@media (max-width: 768px) {
+  .acte-form-box {
+    grid-template-columns: 1fr;
+  }
+  .btn-submit {
+    grid-column: span 1;
+  }
+}
+
+.btn-delete-acte {
+  background: rgba(239, 68, 68, 0.1);
+  color: #EF4444;
+  border: none;
+  padding: 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-delete-acte:hover {
+  background: #EF4444;
+  color: white;
+}

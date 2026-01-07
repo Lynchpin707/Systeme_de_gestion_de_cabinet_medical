@@ -1,0 +1,346 @@
+/* Overlay élégant */
+.elegant-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(8px);
+  z-index: 1500;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.elegant-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Sidebar élégant */
+.elegant-sidebar {
+  position: fixed;
+  top: 0;
+  right: -550px;
+  width: 500px;
+  max-width: 90vw;
+  height: 100vh;
+  background: #FFFFFF;
+  box-shadow: -20px 0 60px rgba(0, 0, 0, 0.15);
+  z-index: 1600;
+  transition: right 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+}
+
+.elegant-sidebar.active {
+  right: 0;
+}
+
+/* Header élégant */
+.elegant-header {
+  padding: 50px 45px 40px;
+  background: linear-gradient(135deg, #F0F9FA 0%, #FFFFFF 100%);
+  border-bottom: 1px solid rgba(62, 174, 177, 0.1);
+  position: relative;
+}
+
+.elegant-header-content {
+  position: relative;
+}
+
+.elegant-line {
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(90deg, #3EAEB1, #61BACA);
+  margin-bottom: 25px;
+  border-radius: 2px;
+  animation: expandLine 0.8s ease-out 0.2s backwards;
+}
+
+@keyframes expandLine {
+  from {
+    width: 0;
+    opacity: 0;
+  }
+  to {
+    width: 60px;
+    opacity: 1;
+  }
+}
+
+.elegant-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 36px;
+  font-weight: 700;
+  color: #1F2937;
+  margin: 0 0 12px 0;
+  letter-spacing: -0.5px;
+  line-height: 1.2;
+}
+
+.elegant-subtitle {
+  font-size: 16px;
+  color: #6B7280;
+  margin: 0;
+  font-weight: 400;
+  letter-spacing: 0.3px;
+}
+
+.elegant-close {
+  position: absolute;
+  top: 45px;
+  right: 45px;
+  width: 45px;
+  height: 45px;
+  background: transparent;
+  border: 1.5px solid rgba(62, 174, 177, 0.2);
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.elegant-close:hover {
+  background: #3EAEB1;
+  border-color: #3EAEB1;
+  transform: rotate(90deg);
+}
+
+.elegant-close:hover svg {
+  stroke: white;
+}
+
+.elegant-close svg {
+  width: 20px;
+  height: 20px;
+  stroke: #3EAEB1;
+  transition: stroke 0.3s;
+}
+
+/* Contenu scrollable */
+.elegant-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 45px;
+}
+
+/* Scrollbar raffinée */
+.elegant-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.elegant-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.elegant-content::-webkit-scrollbar-thumb {
+  background: rgba(62, 174, 177, 0.2);
+  border-radius: 10px;
+  transition: background 0.3s;
+}
+
+.elegant-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(62, 174, 177, 0.4);
+}
+
+/* Sections avec numéros */
+.elegant-section {
+  display: flex;
+  gap: 25px;
+  margin-bottom: 40px;
+  padding-bottom: 40px;
+  border-bottom: 1px solid rgba(62, 174, 177, 0.08);
+  position: relative;
+}
+
+.elegant-section:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.elegant-section::before {
+  content: '';
+  position: absolute;
+  left: 22px;
+  top: 50px;
+  bottom: -40px;
+  width: 1px;
+  background: linear-gradient(180deg, rgba(62, 174, 177, 0.2), transparent);
+}
+
+.elegant-section:last-child::before {
+  display: none;
+}
+
+.section-number {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: #3EAEB1;
+  line-height: 1;
+  flex-shrink: 0;
+  width: 45px;
+  opacity: 0.4;
+  transition: all 0.3s ease;
+}
+
+.elegant-section:hover .section-number {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+.section-body {
+  flex: 1;
+}
+
+.section-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1F2937;
+  margin: 0 0 12px 0;
+  letter-spacing: -0.3px;
+  transition: color 0.3s ease;
+}
+
+.elegant-section:hover .section-title {
+  color: #3EAEB1;
+}
+
+.section-text {
+  font-size: 15px;
+  color: #4B5563;
+  line-height: 1.8;
+  margin: 0;
+  letter-spacing: 0.2px;
+}
+
+.section-date {
+  display: inline-block;
+  margin-top: 15px;
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #3EAEB1;
+  background: rgba(62, 174, 177, 0.08);
+  border-radius: 6px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+/* Footer élégant */
+.elegant-footer {
+  padding: 30px 45px;
+  background: linear-gradient(180deg, #FFFFFF 0%, #F0F9FA 100%);
+  border-top: 1px solid rgba(62, 174, 177, 0.1);
+}
+
+.footer-line {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(62, 174, 177, 0.2), transparent);
+  margin-bottom: 20px;
+}
+
+.elegant-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 24px;
+  background: transparent;
+  border: 1.5px solid rgba(62, 174, 177, 0.2);
+  border-radius: 8px;
+  color: #3EAEB1;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  letter-spacing: 0.3px;
+}
+
+.elegant-back-btn:hover {
+  background: #3EAEB1;
+  border-color: #3EAEB1;
+  color: white;
+  transform: translateX(-5px);
+}
+
+.elegant-back-btn svg {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+  transition: transform 0.3s;
+}
+
+.elegant-back-btn:hover svg {
+  transform: translateX(-3px);
+}
+
+/* Animations d'entrée */
+.elegant-sidebar.active .elegant-section {
+  animation: fadeInRight 0.6s ease-out backwards;
+}
+
+.elegant-sidebar.active .elegant-section:nth-child(1) { animation-delay: 0.1s; }
+.elegant-sidebar.active .elegant-section:nth-child(2) { animation-delay: 0.2s; }
+.elegant-sidebar.active .elegant-section:nth-child(3) { animation-delay: 0.3s; }
+.elegant-sidebar.active .elegant-section:nth-child(4) { animation-delay: 0.4s; }
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .elegant-sidebar {
+    width: 100%;
+    right: -100%;
+  }
+
+  .elegant-header {
+    padding: 35px 25px 30px;
+  }
+
+  .elegant-title {
+    font-size: 28px;
+  }
+
+  .elegant-subtitle {
+    font-size: 14px;
+  }
+
+  .elegant-close {
+    top: 30px;
+    right: 25px;
+    width: 40px;
+    height: 40px;
+  }
+
+  .elegant-content {
+    padding: 30px 25px;
+  }
+
+  .elegant-section {
+    gap: 20px;
+  }
+
+  .section-number {
+    font-size: 24px;
+    width: 40px;
+  }
+
+  .elegant-footer {
+    padding: 25px;
+  }
+}

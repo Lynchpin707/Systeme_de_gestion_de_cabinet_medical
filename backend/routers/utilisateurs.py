@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from typing import List
 
 # Importations relatives
-from .. import models, schema, database
+from .. import models, schema, database, auth
 from ..database import get_db
 
 router = APIRouter(
@@ -50,26 +50,31 @@ def creer_patient(donnees: schema.PatientCreate, db: Session = Depends(get_db)):
     return nouveau_patient
 
 # 4. Créer un Employé
-@router.post("/employer")
-def creer_employer(donnees: schema.EmployerCreate, db: Session = Depends(get_db)):
-    champs_employer = {'role', 'salaire', 'statut'}
-    
-    # Création Utilisateur
-    user_data = donnees.dict(exclude=champs_employer)
-    nouvel_utilisateur = models.Utilisateur(**user_data)
-    db.add(nouvel_utilisateur)
-    db.flush() 
-    
-    # Création Employé
-    emp_data = donnees.dict(include=champs_employer)
-    employer = models.Employer(
-        id_utilisateur=nouvel_utilisateur.id_utilisateur,
-        **emp_data
+from fastapi import APIRouter, Depends, HTTPException, status
+from sqlalchemy.orm import Session
+from .. import models, database, auth, schema
+
+router = APIRouter(prefix="/utilisateurs", tags=["Utilisateurs"])
+
+# AJOUT D'UN EMPLOYÉ (ADMIN OU MÉDECIN)
+@router.post("/employes")
+def ajouter_employe(donnees: schema.UtilisateurCreate, role: str = "medecin", db: Session = Depends(database.get_db)):
+    # 1. Créer l'utilisateur de base
+    nouvel_user = models.Utilisateur(
+        nom_utilisateur=donnees.nom_utilisateur,
+        email=donnees.email,
+        mot_de_passe=auth.hacher_password(donnees.mot_de_passe),
+        numero_tl=donnees.numero_tl
     )
-    db.add(employer)
+    db.add(nouvel_user)
+    db.flush()
+
+    # 2. Créer l'entrée Employer
+    nouvel_employe = models.Employer(id_utilisateur=nouvel_user.id_utilisateur, role=role)
+    db.add(nouvel_employe)
+    
     db.commit()
-    db.refresh(employer)
-    return employer
+    return {"message": "Employé ajouté"}
 
 # 5. Créer un Médecin (3 niveaux)
 @router.post("/employer/medecin")
@@ -102,3 +107,74 @@ def creer_medecin(donnees: schema.MedecinCreate, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(medecin)
     return medecin
+
+
+@router.post("/admin")
+def ajoute_admin(donnees: schema.UtilisateurCreate, db: Session = Depends(get_db)):
+    # 1. Vérifier si l'email existe déjà pour éviter un crash SQL
+    deja_existant = db.query(models.Utilisateur).filter(models.Utilisateur.email == donnees.email).first()
+    if deja_existant:
+        raise HTTPException(status_code=400, detail="Cet email est déjà utilisé")
+
+    # 2. Créer l'Utilisateur de base (uniquement avec les champs de votre UtilisateurCreate)
+    nouvel_utilisateur = models.Utilisateur(
+        nom_utilisateur=donnees.nom_utilisateur,
+        email=donnees.email,
+        numero_tl=donnees.numero_tl,
+        adresse=donnees.adresse,
+        genre=donnees.genre,
+        date_de_naissance=donnees.date_de_naissance,
+        # Assurez-vous que 'auth' est importé pour le hachage
+        mot_de_passe=auth.hacher_password(donnees.mot_de_passe) 
+    )
+    
+    db.add(nouvel_utilisateur)
+    db.flush() 
+
+    # 3. Créer l'entrée Admin liée
+    nouvel_admin = models.Admin(
+        id_utilisateur=nouvel_utilisateur.id_utilisateur
+    )
+    
+    db.add(nouvel_admin)
+    db.commit()
+    db.refresh(nouvel_admin)
+
+    return {"message": "Admin créé", "id": nouvel_admin.id_admin}
+
+
+@router.get("/employes")
+def lister_employes(db: Session = Depends(database.get_db)):
+    # On récupère les lignes
+    resultats = db.query(
+        models.Utilisateur,
+        models.Employer,
+        models.Medecin
+    ).join(models.Employer, models.Utilisateur.id_utilisateur == models.Employer.id_utilisateur)\
+     .outerjoin(models.Medecin, models.Employer.id_employer == models.Medecin.id_employer).all()
+    
+    # On transforme manuellement en liste de dictionnaires pour éviter l'erreur de sérialisation
+    liste_finale = []
+    for user, emp, med in resultats:
+        liste_finale.append({
+            "id_utilisateur": user.id_utilisateur,
+            "nom_utilisateur": user.nom_utilisateur,
+            "email": user.email,
+            "numero_tl": user.numero_tl,
+            "role": emp.role,
+            "salaire": emp.salaire,
+            "specialite": med.specialite if med else "Secrétariat"
+        })
+    
+    return liste_finale
+
+
+@router.delete("/employes/{email}")
+def supprimer_employe(email: str, db: Session = Depends(database.get_db)):
+    user = db.query(models.Utilisateur).filter(models.Utilisateur.email == email).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="Employé non trouvé")
+    
+    db.delete(user)
+    db.commit()
+    return {"message": "Employé supprimé avec succès"}

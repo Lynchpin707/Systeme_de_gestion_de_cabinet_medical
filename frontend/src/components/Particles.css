@@ -1,0 +1,94 @@
+.particles {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  animation: floatParticle 20s infinite ease-in-out;
+}
+
+.particle-1 {
+  width: 8px;
+  height: 8px;
+  background: linear-gradient(135deg, #3EAEB1, #61BACA);
+  top: 20%;
+  left: 10%;
+  animation-duration: 15s;
+  animation-delay: 0s;
+}
+
+.particle-2 {
+  width: 12px;
+  height: 12px;
+  background: linear-gradient(135deg, #61BACA, #9CD1CE);
+  top: 60%;
+  left: 80%;
+  animation-duration: 18s;
+  animation-delay: 2s;
+}
+
+.particle-3 {
+  width: 6px;
+  height: 6px;
+  background: linear-gradient(135deg, #9FD8EF, #D7EAEE);
+  top: 40%;
+  left: 20%;
+  animation-duration: 12s;
+  animation-delay: 1s;
+}
+
+.particle-4 {
+  width: 10px;
+  height: 10px;
+  background: linear-gradient(135deg, #1D837F, #3EAEB1);
+  top: 80%;
+  left: 60%;
+  animation-duration: 16s;
+  animation-delay: 3s;
+}
+
+.particle-5 {
+  width: 14px;
+  height: 14px;
+  background: linear-gradient(135deg, #D7EAEE, #9FD8EF);
+  top: 15%;
+  left: 70%;
+  animation-duration: 20s;
+  animation-delay: 1.5s;
+}
+
+.particle-6 {
+  width: 8px;
+  height: 8px;
+  background: linear-gradient(135deg, #9CD1CE, #61BACA);
+  top: 70%;
+  left: 15%;
+  animation-duration: 14s;
+  animation-delay: 0.5s;
+}
+
+@keyframes floatParticle {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+    opacity: 0.3;
+  }
+  25% {
+    transform: translate(100px, -100px) scale(1.2);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translate(50px, -200px) scale(0.8);
+    opacity: 0.4;
+  }
+  75% {
+    transform: translate(-50px, -100px) scale(1.1);
+    opacity: 0.7;
+  }
+}
