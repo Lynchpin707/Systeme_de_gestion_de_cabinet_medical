@@ -50,7 +50,7 @@ const CalendrierConges = ({ demandes }) => {
       <div className="calendar-sections">
         {/* Section Absents maintenant */}
         <section className="calendar-section">
-          <h3>🚫 Absences actuelles</h3>
+          <h3>Absences actuelles</h3>
           <div className="calendar-grid">
             {absentsMaintenant.length > 0 ? (
               absentsMaintenant.map(c => <CardConge key={c.id_demande} conge={c} type="now" />)
@@ -62,7 +62,7 @@ const CalendrierConges = ({ demandes }) => {
 
         {/* Section Absences futures */}
         <section className="calendar-section">
-          <h3>📅 Départs prévus</h3>
+          <h3>Départs prévus</h3>
           <div className="calendar-grid">
             {absentsFuturs.length > 0 ? (
               absentsFuturs.map(c => <CardConge key={c.id_demande} conge={c} type="future" />)

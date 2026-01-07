@@ -51,25 +51,23 @@ const LoginModal = ({ isOpen, onClose }) => {
       });
       const data = await response.json();
 
+      // --- Dans handleSubmit ---
       if (response.ok) {
-        // Sauvegarder le token
+        // 1. Sauvegarder le token ET les infos utilisateur
         localStorage.setItem('token', data.access_token);
+        localStorage.setItem('user', JSON.stringify(data.user)); // Persistance ici
 
-        // Préparer l'objet utilisateur pour App.js
         const userWithRole = {
           ...data.user,
-          roles: [data.user.role] // Conversion pour le .includes() de App.js
+          roles: [data.user.role]
         };
 
-        // Fermer le modal
         onClose();
         
-        // Redirection automatique via l'événement global
-        setTimeout(() => {
-          if (window.onAdminLogin) {
-            window.onAdminLogin(userWithRole);
-          }
-        }, 100);
+        // 2. Notifier l'application (App.js)
+        if (window.onAdminLogin) {
+          window.onAdminLogin(userWithRole);
+        }
         
         setFormData({ email: '', password: '', remember: false });
       } else {

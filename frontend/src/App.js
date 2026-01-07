@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import MedecinDashboard from './components/MedecinDashboard';
 import Sidebar from './components/Sidebar';
-import './App.css';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import LoginModal from './components/LoginModal';
 import Particles from './components/Particles';
 import AdminDashboard from './components/AdminDashboard';
 import PatientDashboard from './components/PatientDashboard';
+import './App.css';
 
 function App() {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
@@ -15,28 +15,63 @@ function App() {
   const [sidebarType, setSidebarType] = useState('apropos'); 
   const [isAdminView, setIsAdminView] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
-  
-  // Écouter l'événement de connexion
+
+  // 1. RESTAURATION DE SESSION AU CHARGEMENT (F5)
   useEffect(() => {
-    console.log('🔧 App.js - useEffect exécuté, installation du listener');
-    
+    const savedUser = localStorage.getItem('user');
+    const savedToken = localStorage.getItem('token');
+
+    if (savedUser && savedToken) {
+      console.log('🔄 Session détectée, restauration...');
+      try {
+        const user = JSON.parse(savedUser);
+        // On s'assure que le format correspond à ce que les dashboards attendent
+        const userWithRole = {
+          ...user,
+          roles: user.roles || [user.role]
+        };
+        setCurrentUser(userWithRole);
+        setIsAdminView(true);
+      } catch (e) {
+        console.error("Erreur de lecture du localStorage", e);
+        localStorage.clear();
+      }
+    }
+  }, []);
+
+  // 2. ÉCOUTEUR DE CONNEXION (Via LoginModal)
+  useEffect(() => {
     window.onAdminLogin = (user) => {
-      console.log('🎯 onAdminLogin APPELÉ !');
-      console.log('User reçu:', user);
-      console.log('Roles:', user?.roles);
+      console.log('🎯 Connexion réussie pour:', user.nom_utilisateur);
       
+      // On s'assure que l'objet user a bien le tableau roles
+      const formattedUser = {
+        ...user,
+        roles: user.roles || [user.role]
+      };
+
+      // Sauvegarde persistante
+      localStorage.setItem('user', JSON.stringify(formattedUser));
+      
+      setCurrentUser(formattedUser);
       setIsAdminView(true);
-      setCurrentUser(user);
-      
-      console.log('État mis à jour: isAdminView=true, currentUser=', user);
     };
 
     return () => {
-      console.log('🧹 Nettoyage du listener');
       window.onAdminLogin = null;
     };
   }, []);
-  
+
+  // 3. FONCTION DE DÉCONNEXION CENTRALISÉE
+  const handleLogout = () => {
+    console.log('🚪 Déconnexion en cours...');
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    setIsAdminView(false);
+    setCurrentUser(null);
+  };
+
+  // GESTION DES MODALS ET SIDEBAR
   const openLoginModal = () => {
     setIsLoginModalOpen(true);
     document.body.style.overflow = 'hidden';
@@ -52,60 +87,29 @@ function App() {
     setIsSidebarOpen(true);
   };
 
-  const closeSidebar = () => {
-    setIsSidebarOpen(false);
-  };
+  const closeSidebar = () => setIsSidebarOpen(false);
 
-  console.log('🖥️ App.js RENDER - isAdminView:', isAdminView, 'currentUser:', currentUser);
-
-  // Gestion de l'affichage selon le rôle de l'utilisateur
+  // 4. AFFICHAGE CONDITIONNEL DES DASHBOARDS
   if (isAdminView && currentUser) {
-    console.log('✅ Condition remplie: isAdminView=true ET currentUser existe');
-    console.log('Vérification des rôles:', currentUser.roles);
-    
-    // Admin
-    if (currentUser.roles?.includes('admin')) {
-      console.log('→ Affichage AdminDashboard');
-      return <AdminDashboard user={currentUser} onLogout={() => {
-        console.log('🚪 Déconnexion');
-        setIsAdminView(false);
-        setCurrentUser(null);
-      }} />;
-    }
-    
-    // Médecin
-    if (currentUser.roles?.includes('medecin')) {
-      console.log('→ Affichage MedecinDashboard');
-      return <MedecinDashboard user={currentUser} onLogout={() => {
-        console.log('🚪 Déconnexion');
-        setIsAdminView(false);
-        setCurrentUser(null);
-      }} />;
-    }
-    
-    // Secrétaire
-    if (currentUser.roles?.includes('secretaire')) {
-      console.log('→ Affichage AdminDashboard (secrétaire)');
-      return <AdminDashboard user={currentUser} onLogout={() => {
-        setIsAdminView(false);
-        setCurrentUser(null);
-      }} />;
-    }
+    const roles = currentUser.roles || [];
 
-    // Patient
-    // Patient
-if (currentUser.roles?.includes('patient')) {
-  return <PatientDashboard user={currentUser} onLogout={() => {
-    setIsAdminView(false);
-    setCurrentUser(null);
-  }} />;
-}
+    // Dashboard Admin ou Secrétaire
+    if (roles.includes('admin') || roles.includes('secretaire')) {
+      return <AdminDashboard user={currentUser} onLogout={handleLogout} />;
+    }
     
-  } else {
-    console.log('❌ Condition NON remplie - Affichage page accueil');
+    // Dashboard Médecin
+    if (roles.includes('medecin')) {
+      return <MedecinDashboard user={currentUser} onLogout={handleLogout} />;
+    }
+    
+    // Dashboard Patient
+    if (roles.includes('patient')) {
+      return <PatientDashboard user={currentUser} onLogout={handleLogout} />;
+    }
   }
 
-  // Page d'accueil publique
+  // 5. PAGE D'ACCUEIL PUBLIQUE
   return (
     <div className="App">
       <Particles />
