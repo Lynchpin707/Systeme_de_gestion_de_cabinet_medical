@@ -25,7 +25,7 @@ useEffect(() => {
         nom_utilisateur: '', prenom_utilisateur: '', email: '', 
         numero_tlp: '', adresse: '', genre: '', 
         dateNaissance: '', role: 'medecin', salaire: '', 
-        statut: 'actif', specialite: ''
+        statut: 'actif', specialite: 'Généraliste'
       });
     }
   }, [initialData, isOpen]);

@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import './HistoriqueVisites.css';
+import PrescriptionModal from './PrescriptionModal';
 
 const HistoriqueVisites = ({ patientId, patientNom }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isPrescriptionModalOpen, setIsPrescriptionModalOpen] = useState(false);
+  const [selectedVisiteId, setSelectedVisiteId] = useState(null);
   
   // Données de démonstration
   const visites = [
@@ -147,6 +150,18 @@ const HistoriqueVisites = ({ patientId, patientNom }) => {
                         </div>
                       </div>
                     )}
+
+                    <div className="visite-actions">
+                      <button 
+                        className="btn-prescription" 
+                        onClick={() => {
+                          setSelectedVisiteId(visite.id_visite);
+                          setIsPrescriptionModalOpen(true);
+                        }}
+                      >
+                        📋 Gérer Prescription
+                      </button>
+                    </div>
                   </div>
                 </div>
               ))}
@@ -169,6 +184,12 @@ const HistoriqueVisites = ({ patientId, patientNom }) => {
           </button>
         </div>
       </div>
+
+      <PrescriptionModal 
+        isOpen={isPrescriptionModalOpen} 
+        onClose={() => setIsPrescriptionModalOpen(false)} 
+        id_visite={selectedVisiteId} 
+      />
     </div>
   );
 };

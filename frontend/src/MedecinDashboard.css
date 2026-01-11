@@ -1,0 +1,171 @@
+/* Palette de couleurs basée sur vos captures Admin */
+:root {
+  --turquoise-admin: #5AB9BC;
+  --bg-light-blue: #F8FBFB;
+  --text-dark: #1D353F;
+  --text-muted: #94A3B8;
+  --sidebar-width: 280px;
+}
+
+.medecin-dashboard {
+  display: flex;
+  min-height: 100vh;
+  background-color: var(--bg-light-blue);
+  font-family: 'Inter', sans-serif;
+}
+
+/* SIDEBAR BLANCHE */
+.medecin-sidebar {
+  width: var(--sidebar-width);
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  height: 100vh;
+  border-right: 1px solid #F1F5F9;
+  z-index: 100;
+}
+
+.medecin-logo-section {
+  padding: 40px 30px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-box-turquoise {
+  width: 44px;
+  height: 44px;
+  background-color: var(--turquoise-admin);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(90, 185, 188, 0.2);
+}
+
+.logo-text-admin {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--turquoise-admin);
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.logo-text-admin span { color: #334155; }
+
+.medecin-nav { padding: 0 20px; flex: 1; }
+
+.nav-item-admin {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 14px 20px;
+  margin-bottom: 8px;
+  border: none;
+  background: transparent;
+  border-radius: 15px;
+  color: #64748B;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  transition: 0.3s;
+  text-align: left;
+}
+
+.nav-item-admin.active {
+  background-color: var(--turquoise-admin);
+  color: white;
+  box-shadow: 0 10px 20px rgba(90, 185, 188, 0.3);
+}
+
+.btn-logout-admin {
+  margin: 30px 20px;
+  padding: 15px;
+  border-radius: 15px;
+  background-color: #FEF2F2;
+  color: #EF4444;
+  border: 1px solid #FEE2E2;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* MAIN CONTENT */
+.medecin-main-content { margin-left: var(--sidebar-width); flex: 1; }
+.medecin-header-top { display: flex; justify-content: space-between; align-items: center; padding: 30px 50px; }
+.welcome-title { font-size: 28px; font-weight: 800; color: var(--text-dark); margin: 0; }
+.current-date { color: var(--text-muted); font-size: 14px; margin-top: 5px; }
+.content-container { padding: 0 50px 50px 50px; }
+
+/* --- STYLE BASE PATIENTS (AJOUTÉ) --- */
+.page-header-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.search-bar-container { position: relative; width: 350px; }
+
+.patient-search-input {
+  width: 100%;
+  padding: 12px 15px 12px 40px;
+  border: 1px solid #E2E8F0;
+  border-radius: 12px;
+  background: white;
+  font-size: 14px;
+}
+
+.search-icon { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #94A3B8; }
+
+.patients-list-wrapper {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+  overflow: hidden;
+  border: 1px solid #F1F5F9;
+}
+
+.patients-table { width: 100%; border-collapse: collapse; }
+.patients-table th { background: #F8FAFC; padding: 15px 20px; text-align: left; color: #64748B; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
+.patients-table td { padding: 15px 20px; border-bottom: 1px solid #F1F5F9; }
+
+.patient-info-cell { display: flex; align-items: center; gap: 12px; }
+.avatar-circle {
+  width: 36px; height: 36px;
+  background: var(--turquoise-admin);
+  color: white; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 13px;
+}
+
+.patient-name { font-weight: 600; color: var(--text-dark); }
+.id-badge { background: #F1F5F9; padding: 4px 8px; border-radius: 6px; font-family: monospace; font-size: 12px; }
+
+/* RE-UTILISATION DE VOTRE BOUTON SOMBRE */
+.btn-view-dossier {
+  background: #1D353F;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* PLANNING CARD */
+.rdv-card-admin {
+  background: white;
+  padding: 20px 30px;
+  border-radius: 20px;
+  display: grid;
+  grid-template-columns: 100px 2fr 1fr 1.5fr;
+  align-items: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+  border: 1px solid #F1F5F9;
+  margin-bottom: 15px;
+}
+
+.rdv-hour { font-size: 18px; font-weight: 800; color: var(--turquoise-admin); }
+.btn-dossier-dark { background: #1D353F; color: white; border: none; padding: 10px 20px; border-radius: 12px; font-weight: 600; cursor: pointer; justify-self: end; }

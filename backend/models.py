@@ -89,7 +89,7 @@ class RDV(Base):
 class Visite(Base):
     __tablename__ = "Visite"
     id_visite = Column(Integer, primary_key=True, index=True)
-    id_RDV = Column(Integer, ForeignKey("RDV.id_RDV"))
+    id_RDV = Column(Integer, ForeignKey("RDV.id_RDV"), nullable=True)
     date_visite = Column(Date, default=datetime.datetime.now)
     type_visite = Column(String(50))
     poids = Column(Float)
@@ -99,6 +99,16 @@ class Visite(Base):
 
     rdv = relationship("RDV", back_populates="visites")
     
+
+class RealiserActe(Base):
+    __tablename__ = "realiser_acte"
+    id_visite = Column(Integer, ForeignKey("Visite.id_visite"), primary_key=True)
+    id_acte = Column(Integer, ForeignKey("acte_medical.id_acte"), primary_key=True)
+    id_tarifier = Column(Integer, ForeignKey("tarifier.id_tarifier"), nullable=True)
+
+    visite = relationship("Visite")
+    acte = relationship("ActeMedical")
+    tarifier = relationship("Tarifier")
 
 
 class Facture(Base):

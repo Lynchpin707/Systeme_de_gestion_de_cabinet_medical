@@ -1,0 +1,240 @@
+.medecin-dashboard {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f4fbfc;
+  font-family: 'Inter', sans-serif;
+}
+
+.medecin-sidebar {
+  width: 260px;
+  background: white;
+  display: flex;
+  flex-direction: column;
+  padding: 30px 20px;
+  position: fixed;
+  height: 100vh;
+  box-shadow: 2px 0 10px rgba(0,0,0,0.02);
+}
+
+.medecin-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 50px;
+  padding-left: 10px;
+}
+
+.logo-icon {
+  width: 38px;
+  height: 38px;
+  background: #5db9bc;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.medecin-logo span {
+  font-weight: 800;
+  font-size: 1.2rem;
+  color: #1a3334;
+}
+
+.medecin-nav {
+  flex: 1;
+}
+
+.nav-btn {
+  width: 100%;
+  padding: 12px 20px;
+  margin-bottom: 10px;
+  border: none;
+  background: none;
+  border-radius: 12px;
+  text-align: left;
+  font-weight: 600;
+  color: #7a8b8c;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.nav-btn.active {
+  background: #5db9bc;
+  color: white;
+  box-shadow: 0 4px 12px rgba(93, 185, 188, 0.3);
+}
+
+.logout-btn {
+  padding: 12px;
+  border-radius: 12px;
+  border: none;
+  background: #fff5f5;
+  color: #ff5c5c;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.medecin-main {
+  margin-left: 260px;
+  flex: 1;
+  padding: 50px;
+}
+
+.medecin-header h1 {
+  font-size: 2rem;
+  color: #1a3334;
+  margin-bottom: 5px;
+}
+
+.rdv-timeline {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.rdv-item {
+  background: white;
+  padding: 25px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+}
+
+.rdv-time {
+  font-weight: 800;
+  color: #5db9bc;
+  font-size: 1.1rem;
+}
+
+.rdv-action {
+  background: #1a3334;
+  color: white;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Conteneur principal */
+.secretaire-card {
+    background: white;
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+
+/* Boutons */
+.secretaire-btn-primary {
+    background: #1D837F;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.secretaire-btn-primary:hover {
+    background: #156663;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(29, 131, 127, 0.2);
+}
+
+.secretaire-btn-secondary {
+    background: #EDF2F7;
+    color: #4A5568;
+    border: 1px solid #E2E8F0;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+/* Formulaire */
+.secretaire-date-text {
+    display: block;
+    font-size: 0.85rem;
+    color: #4A5568;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.secretaire-input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #E2E8F0;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    transition: border-color 0.2s;
+}
+
+.secretaire-input:focus {
+    outline: none;
+    border-color: #1D837F;
+    box-shadow: 0 0 0 3px rgba(29, 131, 127, 0.1);
+}
+
+/* Table */
+.secretaire-table-container {
+    overflow-x: auto;
+    margin-top: 20px;
+}
+
+.secretaire-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.secretaire-table th {
+    background: #F8FAFC;
+    padding: 15px;
+    color: #718096;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: 2px solid #EDF2F7;
+}
+
+.secretaire-table td {
+    padding: 15px;
+    border-bottom: 1px solid #EDF2F7;
+    color: #2D3748;
+    font-size: 0.95rem;
+}
+
+.secretaire-table tr:hover {
+    background-color: #FDFDFD;
+}
+
+/* Badges de Statut */
+.secretaire-status {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    display: inline-block;
+    text-transform: capitalize;
+}
+
+.secretaire-status.blue {
+    background: #EBF8FF;
+    color: #3182CE;
+}
+
+.secretaire-status.green {
+    background: #F0FFF4;
+    color: #38A169;
+}
+
+.secretaire-status.red {
+    background: #FFF5F5;
+    color: #E53E3E;
+}
+.rdv-status.status-confirme { color: #2ecc71; background: #eafaf1; }
+.rdv-status.status-en_attente { color: #f1c40f; background: #fef9e7; }
+.rdv-status.status-annule { color: #e74c3c; background: #fdedec; }

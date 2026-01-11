@@ -16,7 +16,7 @@ function App() {
   const [isAdminView, setIsAdminView] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
 
-  // 1. RESTAURATION DE SESSION AU CHARGEMENT (F5)
+// 1. RESTAURATION DE SESSION AU CHARGEMENT (F5)
   useEffect(() => {
     const savedUser = localStorage.getItem('user');
     const savedToken = localStorage.getItem('token');
@@ -25,9 +25,10 @@ function App() {
       console.log('🔄 Session détectée, restauration...');
       try {
         const user = JSON.parse(savedUser);
-        // On s'assure que le format correspond à ce que les dashboards attendent
         const userWithRole = {
           ...user,
+          // Correction : On assure la présence de l'ID pour les filtres
+          id_utilisateur: user.id_utilisateur || user.id,
           roles: user.roles || [user.role]
         };
         setCurrentUser(userWithRole);
@@ -44,15 +45,14 @@ function App() {
     window.onAdminLogin = (user) => {
       console.log('🎯 Connexion réussie pour:', user.nom_utilisateur);
       
-      // On s'assure que l'objet user a bien le tableau roles
       const formattedUser = {
         ...user,
+        // Correction : On assure la présence de l'ID ici aussi
+        id_utilisateur: user.id_utilisateur || user.id,
         roles: user.roles || [user.role]
       };
 
-      // Sauvegarde persistante
       localStorage.setItem('user', JSON.stringify(formattedUser));
-      
       setCurrentUser(formattedUser);
       setIsAdminView(true);
     };

@@ -77,14 +77,20 @@ def ajouter_employe(donnees: schema.UtilisateurCreate, role: str = "medecin", db
     return {"message": "Employé ajouté"}
 
 # 5. Créer un Médecin (3 niveaux)
+from ..auth import pwd_context # Importez le contexte de hachage défini dans auth.py
+
 @router.post("/employer/medecin")
 def creer_medecin(donnees: schema.MedecinCreate, db: Session = Depends(get_db)):
     champs_medecin = {'specialite'}
     champs_employer = {'role', 'salaire', 'statut'}
     
+    # --- Hachage du mot de passe ---
+    user_dict = donnees.dict(exclude=champs_medecin | champs_employer)
+    # On remplace le mot de passe en clair par sa version hachée
+    user_dict["mot_de_passe"] = pwd_context.hash(donnees.mot_de_passe)
+    
     # Niveau 1 : Utilisateur
-    user_data = donnees.dict(exclude=champs_medecin | champs_employer)
-    nouvel_utilisateur = models.Utilisateur(**user_data)
+    nouvel_utilisateur = models.Utilisateur(**user_dict)
     db.add(nouvel_utilisateur)
     db.flush()
     

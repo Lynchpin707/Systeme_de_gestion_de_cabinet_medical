@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from datetime import date, time
+from datetime import date, time, datetime
 from typing import Optional, List
 
 
@@ -15,7 +15,19 @@ class UtilisateurCreate(BaseModel):
 class UtilisateurUpdate(BaseModel):
     name: str
     email: str
+    
+class Patient(BaseModel):
+    id_patient: int
+    id_utilisateur: int
+    nom_utilisateur: str
+    email: str
+    # Indispensable pour que React puisse filtrer
+    medecin_traitant: Optional[int] = None 
+    couverture_medicale: Optional[str] = None
 
+    class Config:
+        from_attributes = True # Permet de lire les objets SQLAlchemy
+        
 class PatientCreate(UtilisateurCreate):
     medecin_traitant: Optional[int]
     couverture_medicale: Optional[str]
@@ -65,14 +77,14 @@ class MedecinOut(BaseModel):
         
 class VisiteBase(BaseModel):
     type_visite: str
-    poids: float
-    temperature: float
-    tension_max: float
-    tension_min: float
+    poids: Optional[float] = None
+    temperature: Optional[float] = None
+    tension_max: Optional[float] = None
+    tension_min: Optional[float] = None
 
 
 class VisiteCreate(VisiteBase):
-    id_RDV: int
+    id_RDV: Optional[int] = None
 
 class Visite(VisiteBase):
     id_visite: int
@@ -80,6 +92,10 @@ class Visite(VisiteBase):
 
     class Config:
         from_attributes = True   
+
+class RealiserActeCreate(BaseModel):
+    id_acte: int
+    id_tarifier: Optional[int] = None
         
 # --- RDV ---
 class RDVBase(BaseModel):
@@ -89,14 +105,29 @@ class RDVBase(BaseModel):
     heure_rdv: time
     statut: str = "Prévu" # Valeur par défaut
 
-class RDVCreate(RDVBase):
-    pass
+class RDVCreate(BaseModel):
+    id_patient: int
+    id_medecin: int
+    date_rdv: date
+    heure_rdv: time  # Accepte "09:00" ou "09:00:00"
+    statut: str = "Prévu"
 
 class RDV(RDVBase):
     id_RDV: int
 
     class Config:
         from_attributes = True 
+        
+class RDVOut(BaseModel):
+    id_rdv: int
+    date_rdv: datetime
+    motif: Optional[str]
+    statut: str
+    id_patient: int
+    patient: Optional[PatientOut] 
+    class Config: from_attributes = True
+        
+
         
 # Ce que le Frontend envoie (Saisie minimale)
 class FactureCreate(BaseModel):
@@ -212,6 +243,9 @@ class Ordonnance(OrdonnanceCreate):
     class Config:
         from_attributes = True
 
+class OrdonnanceUpdate(BaseModel):
+    instructions: Optional[str] = None
+
 # --- Détails Prescription ---
 class PrescriptionMedCreate(BaseModel):
     id_medicament: int
@@ -251,8 +285,8 @@ class Medecin(MedecinCreate):
 # --- Demande de Congé ---
 class DemandeCongeCreate(BaseModel):
     id_employer: int
-    date_debut: date
-    date_fin: date
+    date_debut_conge: date
+    date_fin_conge: date
     type_conge: str
 
 class DemandeConge(DemandeCongeCreate):
@@ -285,3 +319,64 @@ class CongeCreate(BaseModel):
     date_debut_conge: date
     date_fin_conge: date
     
+# Modifiez ces classes pour inclure explicitement les IDs
+class AllergieOut(BaseModel):
+    id_allergie: int  # <--- INDISPENSABLE
+    nom_allergie: str
+    class Config:
+        from_attributes = True
+
+class ContientAllergOut(BaseModel):
+    # Ajoutez l'ID ici aussi, car c'est lui que la table de liaison utilise
+    id_allergie: int  
+    id_dossier: int
+    severite: Optional[str]
+    allergie: AllergieOut
+    class Config:
+        from_attributes = True
+
+class MaladieOut(BaseModel):
+    id_maladie: int  # <--- INDISPENSABLE
+    nom_maladie: str
+    class Config:
+        from_attributes = True
+
+class ContientMaladiesOut(BaseModel):
+    id_dossier: int
+    id_maladie: int  # <-- Vérifiez que cette ligne existe
+    maladie: MaladieOut
+    class Config:
+        from_attributes = True
+        
+class DossierMedical(BaseModel):
+    id_dossier: int
+    id_patient: int
+    groupe_sanguin: Optional[str]
+    date_creation: date
+    allergies: List[ContientAllergOut] = []
+    maladies: List[ContientMaladiesOut] = []
+    class Config: from_attributes = True
+    
+    
+class Allergie(BaseModel):
+    id_allergie: int
+    nom_allergie: str
+    class Config: from_attributes = True
+
+class Maladie(BaseModel):
+    id_maladie: int
+    nom_maladie: str
+    class Config: from_attributes = True
+    
+class AjoutAllergie(BaseModel):
+    id_allergie: int
+    severite: Optional[str] = "Moyenne"
+
+class AjoutMaladie(BaseModel):
+    id_maladie: int
+
+class Analyse(BaseModel):
+    id_analyse: int
+    nom_analyse: str
+    class Config:
+        from_attributes = True

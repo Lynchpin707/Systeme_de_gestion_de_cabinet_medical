@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 from .. import models, schema, database
 
 router = APIRouter(prefix="/rh", tags=["Gestion du Personnel"])
@@ -12,16 +12,17 @@ def recruter_employer(obj: schema.EmployerCreate, db: Session = Depends(database
     db.refresh(nouveau)
     return nouveau
 
-@router.post("/employer/{id_employer}/conge")
-def demander_conge_employer(id_employer: int, donnees: schema.CongeCreate, db: Session = Depends(database.get_db)):
-    # Vérifier si l'employé existe
-    employer = db.query(models.Employer).filter(models.Employer.id_employer == id_employer).first()
+@router.post("/employer/{id_utilisateur}/conge")
+def demander_conge_employer(id_utilisateur: int, donnees: schema.DemandeCongeCreate, db: Session = Depends(database.get_db)):
+    # 1. Trouver l'employé lié à cet utilisateur
+    employer = db.query(models.Employer).filter(models.Employer.id_utilisateur == id_utilisateur).first()
+    
     if not employer:
-        raise HTTPException(status_code=404, detail="Employé non trouvé")
+        raise HTTPException(status_code=404, detail="Profil employé introuvable pour cet utilisateur")
 
-    # Création de la demande
+    # 2. Création de la demande avec le BON id_employer
     nouvelle_demande = models.DemandeConge(
-        id_employer=id_employer,
+        id_employer=employer.id_employer, # On utilise l'ID trouvé en base
         type_conge=donnees.type_conge,
         date_debut_conge=donnees.date_debut_conge,
         date_fin_conge=donnees.date_fin_conge,
@@ -30,9 +31,13 @@ def demander_conge_employer(id_employer: int, donnees: schema.CongeCreate, db: S
     
     db.add(nouvelle_demande)
     db.commit()
-    db.refresh(nouvelle_demande)
-    
-    return {"message": "Demande de congé enregistrée", "id_demande": nouvelle_demande.id_demande}
+    return {"message": "Demande de congé enregistrée"}
+
+@router.get("/conges/employer/{id_utilisateur}")
+def liste_conges_medecin(id_utilisateur: int, db: Session = Depends(database.get_db)):
+    employer = db.query(models.Employer).filter(models.Employer.id_utilisateur == id_utilisateur).first()
+    if not employer: return []
+    return db.query(models.DemandeConge).filter(models.DemandeConge.id_employer == employer.id_employer).all()
 
 @router.get("/conges")
 def lister_conges(db: Session = Depends(database.get_db)):
@@ -76,3 +81,34 @@ def approuver_conge(id_demande: int, db: Session = Depends(database.get_db)):
     db.commit()
     return {"message": "Congé accepté et statut employé mis à jour"}
 
+@router.patch("/conges/{id_demande}/refuser")
+def refuser_conge(id_demande: int, db: Session = Depends(database.get_db)):
+    # 1. Trouver la demande
+    demande = db.query(models.DemandeConge).filter(models.DemandeConge.id_demande == id_demande).first()
+    
+    if not demande:
+        raise HTTPException(status_code=404, detail="Demande introuvable")
+    
+    # 2. Mettre à jour uniquement le statut de la demande
+    demande.statut = "refusé"
+    
+    # Note : On ne touche pas au statut de l'employé (il reste "actif")
+    
+    db.commit()
+    return {"message": "La demande de congé a été refusée"}
+
+
+@router.get("/rendez-vous/medecin/{id_utilisateur}")
+def obtenir_rdv_medecin(id_utilisateur: int, db: Session = Depends(database.get_db)):
+    # 1. On trouve l'employé à partir de l'utilisateur
+    employer = db.query(models.Employer).filter(models.Employer.id_utilisateur == id_utilisateur).first()
+    if not employer:
+        return []
+
+    # 2. On trouve le médecin à partir de l'employé
+    medecin = db.query(models.Medecin).filter(models.Medecin.id_employer == employer.id_employer).first()
+    if not medecin:
+        return []
+
+    # 3. On récupère les RDV
+    return db.query(models.RDV).filter(models.RDV.id_medecin == medecin.id_medecin).all()
