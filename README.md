@@ -20,7 +20,7 @@ La réussite de ce projet repose sur une démarche structurée en trois phases c
 
 ![DFD](docs/DFD.drawio.png)
 
-- **Gestion des Données (GDD) :** illustre les intérdépendances entre les 6 processus que gère notre application.
+- **Dépendances des Données (GDD) :** illustre les intérdépendances entre les 6 processus que gère notre application.
 
 ![GDD](docs/GDD.png)
 
