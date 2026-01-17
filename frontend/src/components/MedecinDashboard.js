@@ -48,8 +48,10 @@ const MedecinDashboard = ({ user, onLogout }) => {
       );
 
       if (response.status === 404) {
-        // Dossier doesn't exist, set to null
-        setDossierActif(null);
+        // Dossier doesn't exist, prompt to create
+        setPatientForNewDossier(patient);
+        setShowCreateModal(true);
+        return;
       } else if (!response.ok) {
         const error = await response.json();
         throw new Error(error.detail || "Erreur d'accès");
@@ -285,7 +287,7 @@ const MedecinDashboard = ({ user, onLogout }) => {
         const nouveauDossier = await res.json();
         setDossierActif(nouveauDossier);
         setShowCreateModal(false);
-        setActiveTab("vue-dossier");
+        setIsVisiteModalOpen(true);
       }
     } catch (err) {
       console.error("Erreur création dossier:", err);
