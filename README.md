@@ -80,6 +80,18 @@ python3 mock_data/seed.py
 python3 mock_data/seed2.py
 ```
 
+### Apérçu :
+Quelques exemples des fonctionnalités gérées par notre application web:
+
+**Pour le patient :** La prise, modification ou annulation de rendez-vous:
+![Ordonnace digitale](docs/prise_de_rdv.png)
+
+**Pour le médecin :** La rédaction d'ordonnances digitales.
+![Ordonnace digitale](docs/ordonnance.png)
+
+**Pour la direction :** la gestion des demandes de congés.
+![Gestion des congé](docs/gestion_congé.png)
+
 ## Ce projet est fait par
 - Lina Raoui
 - Assmaa El Hidani 
